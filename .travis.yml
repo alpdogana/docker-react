@@ -4,6 +4,9 @@ services:
 
 before_install:
  - docker build -t dice/docker-react -f Dockerfile.dev .
+ - docker build -t dice/docker-react-prod .
 
 script:
  - docker run -e CI=true dice/docker-react npm run test
+ - docker run -it -d  dice/docker-react-prod
+
