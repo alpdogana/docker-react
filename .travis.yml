@@ -4,9 +4,20 @@ services:
 
 before_install:
  - docker build -t dice/docker-react -f Dockerfile.dev .
- - docker build -t dice/docker-react-prod .
 
 script:
  - docker run -e CI=true dice/docker-react npm run test
- - docker run -it -d  dice/docker-react-prod
+
+deploy:
+ provider: elasticbeanstalk
+ region: "eu-west-2"
+ app: "docker"
+ env: "Docker-env"
+ bucket_name: "elasticbeanstalk-eu-west-2-656107153223"
+ bucket_path: "docker"
+ on:
+  branch: master
+ access_key_id: $AWS_ACCESS_KEY
+ secret_access_key:
+  secure: "$AWS_SECRET_KEY"
 
